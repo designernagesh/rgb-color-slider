@@ -1,18 +1,18 @@
 import { useState } from "react";
+import ColorSlider from "./components/ColorSlider";
 
 function App() {
   const [rgb, setRgb] = useState([233, 236, 239]);
 
-  const colorHandler = (e) => {
-    const index = e.target.name;
-    setRgb(prevRgb => {
+  const colorHandler = (e, index) => {
+    setRgb((prevRgb) => {
       const newRgb = [...prevRgb];
       newRgb[index] = e.target.value;
+      document.body.style.backgroundColor = `rgb(${newRgb.join(", ")})`;
       return newRgb;
-    })
+    });
+  };
 
-    document.body.style.backgroundColor = `rgb(${rgb})`;
-  }
 
   return (
     <>
@@ -22,17 +22,22 @@ function App() {
           Change each slider and observe the Body Background Color! 😊
         </p>
 
-        <div className="input-group">
-          R<input type="range" min="0" max="255" value={rgb[0]} name="0" onInput={colorHandler} />
-        </div>
-        <div className="input-group">
-          G<input type="range" min="0" max="255" value={rgb[1]} name="1" onInput={colorHandler} />
-        </div>
-        <div className="input-group">
-          B<input type="range" min="0" max="255" value={rgb[2]} name="2" onInput={colorHandler} />
-        </div>
+        <ColorSlider
+          color="R"
+          colorValue={rgb[0]}
+          colorHandler={(e) => colorHandler(e, 0)}
+        />
+        <ColorSlider
+          color="G"
+          colorValue={rgb[1]}
+          colorHandler={(e) => colorHandler(e, 1)}
+        />
+        <ColorSlider
+          color="B"
+          colorValue={rgb[2]}
+          colorHandler={(e) => colorHandler(e, 2)}
+        />
         <span className="result">rgb({rgb.join(", ")})</span>
-
       </div>
     </>
   );
